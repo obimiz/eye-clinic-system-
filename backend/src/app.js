@@ -1,5 +1,6 @@
 import express from "express"
 import userRouter from "./routes/user.route.js";
+import patientRouter from "./routes/patient.route.js";
 
 
 const app = express();  //create an express app
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extended: true}))
 
 //route declaration
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/patients", patientRouter);
 
 //Health check
 app.get("/", (req, res) => {
