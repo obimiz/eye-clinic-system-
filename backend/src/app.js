@@ -3,6 +3,7 @@ import userRouter from "./routes/user.route.js";
 import patientRouter from "./routes/patient.route.js";
 import appointmentRouter from "./routes/appointment.route.js";
 import prescriptionRouter from "./routes/prescription.route.js";
+import dashboardRouter from "./routes/dashboard.route.js";
  
 
 
@@ -18,10 +19,10 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/patients", patientRouter);
 app.use("/api/v1/appointments", appointmentRouter);
 app.use("/api/v1/prescriptions", prescriptionRouter);
-
+app.use("/api/v1/dashboard", dashboardRouter);
 //Health check
 app.get("/", (req, res) => {
-    res.json({ message: "Health Clinic API is running" });
+    res.json({ message: "Eye Clinic API is running ✅" });
 });
 
 
