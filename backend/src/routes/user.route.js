@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { registerUser, loginUser, logoutUser } from "../controllers/user.controller.js";
-import { getAllStaff, getSingleStaff, updateStaff, deleteStaff, changeStaffRole } from "../controllers/staff.controller.js";
+import { addStaff, loginUser, logoutUser } from "../controllers/user.controller.js";
+import { getAllStaff, getSingleStaff, updateStaff, deleteStaff, changeStaffRole, deactivateStaff } from "../controllers/staff.controller.js";
 import { protect, restrictTo } from "../middlewares/auth.middleware.js";
  
 const router = Router();
  
 // ─── Public routes ────────────────────────────────────────────
-router.post("/register", registerUser);
 router.post("/login", loginUser);
  
 // ─── Auth routes ──────────────────────────────────────────────
@@ -18,12 +17,15 @@ router.get("/profile", protect, (req, res) => {
   });
 });
  
-// ─── Staff Management routes ──────────────────────────────────
+// ─── Admin only — Staff Management ───────────────────────────
+router.post("/add-staff", protect, restrictTo("admin"), addStaff);
 router.get("/all", protect, restrictTo("admin"), getAllStaff);
-router.get("/:id", protect, getSingleStaff);
-router.put("/:id", protect, updateStaff);
 router.delete("/:id", protect, restrictTo("admin"), deleteStaff);
 router.put("/:id/role", protect, restrictTo("admin"), changeStaffRole);
+router.put("/:id/deactivate", protect, restrictTo("admin"), deactivateStaff);
+ 
+// ─── Protected — any logged in staff ─────────────────────────
+router.get("/:id", protect, getSingleStaff);
+router.put("/:id", protect, updateStaff);
  
 export default router;
- 

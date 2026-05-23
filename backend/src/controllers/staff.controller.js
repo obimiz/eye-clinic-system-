@@ -175,6 +175,36 @@ const changeStaffRole = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
+
+// ─── Deactivate Staff ─────────────────────────────────────────
+const deactivateStaff = async (req, res) => {
+  try {
+    if (req.user._id.toString() === req.params.id) {
+      return res.status(400).json({ message: "You cannot deactivate your own account" });
+    }
+
+    const staff = await User.findByIdAndUpdate(
+      req.params.id,
+      { isActive: false },
+      { new: true }
+    ).select("-password");
+
+    if (!staff) {
+      return res.status(404).json({ message: "Staff member not found" });
+    }
+
+    res.status(200).json({
+      message: "Staff member deactivated successfully",
+      staff,
+    });
+
+  } catch (error) {
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Invalid staff ID format" });
+    }
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};
  
-export { getAllStaff, getSingleStaff, updateStaff, deleteStaff, changeStaffRole };
- 
+
+export { getAllStaff, getSingleStaff, updateStaff, deleteStaff, changeStaffRole, deactivateStaff };
