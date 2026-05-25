@@ -50,11 +50,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
     lastLogin: {
       type: Date,
     },
+
+    // ← new fields added INSIDE the schema ✅
+    refreshToken: {
+      type: String,
+      select: false,
+    },
+    passwordResetToken: String,
+    passwordResetExpire: Date,
   },
   {
     timestamps: true,
